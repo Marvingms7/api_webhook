@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 import json
 
@@ -27,9 +27,35 @@ class WebhookData(db.Model):
     forma_pagamento = db.Column(db.String(100), nullable=True)
     parcelas = db.Column(db.Integer, nullable=True)
 
+# Rota para exibir a tela de login
+@app.route('/login', methods=['GET'])
+def login():
+    return render_template('login.html')
+
+# Rota para autenticação de login
+@app.route('/login', methods=['POST'])
+def login_post():
+    data = request.form
+    email = data['email']
+    password = data['password']
+
+    user = User.query.filter_by(email=email).first()
+
+    if not user or user.password != password:
+        return jsonify({'message': 'Credenciais inválidas'}), 401
+
+    # Aqui você pode gerar um token de autenticação para o usuário se desejar
+
+    return jsonify({'message': 'Login bem-sucedido'}), 200
+
+# Rota para exibir a tela de cadastro
+@app.route('/signup', methods=['GET'])
+def signup():
+    return render_template('signup.html')
+
 # Rota para criar uma nova conta
 @app.route('/signup', methods=['POST'])
-def signup():
+def signup_post():
     data = request.form
     email = data['email']
     password = data['password']
@@ -51,33 +77,18 @@ def signup():
 
     return jsonify({'message': 'Conta criada com sucesso'}), 201
 
-# Rota para autenticação de login
-@app.route('/login', methods=['POST'])
-def login():
-    data = request.form
-    email = data['email']
-    password = data['password']
-
-    user = User.query.filter_by(email=email).first()
-
-    if not user or user.password != password:
-        return jsonify({'message': 'Credenciais inválidas'}), 401
-
-    # Aqui você pode gerar um token de autenticação para o usuário se desejar
-
-    return jsonify({'message': 'Login bem-sucedido'}), 200
-
-# Lista para armazenar os registros de webhooks
-webhooks = []
+# Rota para exibir a tela de webhooks
+@app.route('/webhooks', methods=['GET'])
+def webhooks():
+    webhooks = WebhookData.query.all()
+    return render_template('webhooks.html', webhooks=webhooks)
 
 # Rota para receber o webhook do sistema de pagamento
-@app.route('/webhook1000/', methods=['POST', 'GET'])
+@app.route('/webhook1000/', methods=['POST'])
 def handle_webhook():
     response = request.data
     response_str = response.decode('utf-8')
     response_json = json.loads(response_str)
-    webhooks.append(response_json)
-    print(response_json)
 
     # Extrair os dados do webhook
     nome = response_json['nome']
@@ -124,20 +135,7 @@ def enviar_mensagem_pagamento_recusado(nome, email):
 def remover_acesso(nome, email):
     print(f"Remover acesso do cliente: {nome} ({email})")
 
-# Rota para exibir os registros de webhooks
-@app.route('/webhooks', methods=['GET'])
-def get_webhooks():
-    return jsonify(webhooks)
-
-# Rota para pesquisar tratativas por cliente
-@app.route('/tratativas/<cliente>', methods=['GET'])
-def get_tratativas(cliente):
-    tratativas = []
-    for webhook in webhooks:
-        if webhook['nome'] == cliente:
-            tratativas.append(webhook)
-    return jsonify({'tratativas': tratativas})
-
 if __name__ == '__main__':
-    db.create_all()
+    with app.app_context():
+        db.create_all()
     app.run(debug=True)

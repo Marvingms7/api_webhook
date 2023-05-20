@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Webhooks</title>
+    <style>
+        body {
+            background-color: #f2f2f2;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Webhooks</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Valor</th>
+                    <th>Forma de Pagamento</th>
+                    <th>Parcelas</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for webhook in webhooks %}
+                <tr>
+                    <td>{{ webhook.nome }}</td>
+                    <td>{{ webhook.email }}</td>
+                    <td>{{ webhook.status }}</td>
+                    <td>{{ webhook.valor }}</td>
+                    <td>{{ webhook.forma_pagamento }}</td>
+                    <td>{{ webhook.parcelas }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
