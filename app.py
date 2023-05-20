@@ -2,10 +2,9 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 import json
 
-
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'  # Configurar a URL do banco de dados
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 # Modelo de dados do usuário
@@ -18,8 +17,7 @@ class User(db.Model):
         self.email = email
         self.password = password
 
-#Modelo de dados do webhook para salvar
-
+# Modelo de dados do webhook para salvar
 class WebhookData(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     nome = db.Column(db.String(100), nullable=True)
@@ -69,7 +67,7 @@ def login():
 
     return jsonify({'message': 'Login bem-sucedido'}), 200
 
-# Dicionário para armazenar os registros de webhooks
+# Lista para armazenar os registros de webhooks
 webhooks = []
 
 # Rota para receber o webhook do sistema de pagamento
@@ -101,7 +99,13 @@ def handle_webhook():
     elif status == 'reembolsado':
         # Remover acesso ao curso
         remover_acesso(nome, email)
-    db.session.bulk_insert_mappings(WebhookData, webhooks)
+
+    # Salvar o webhook no banco de dados
+    new_webhook = WebhookData(nome=nome, email=email, status=status, valor=valor,
+                              forma_pagamento=forma_pagamento, parcelas=parcelas)
+    db.session.add(new_webhook)
+    db.session.commit()
+
     return 'Webhook recebido'
 
 # Função para liberar acesso ao curso
