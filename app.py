@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 import json
-from sqlalchemy.orm import sessionmaker, session
+
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'  # Configurar a URL do banco de dados
@@ -101,7 +101,7 @@ def handle_webhook():
     elif status == 'reembolsado':
         # Remover acesso ao curso
         remover_acesso(nome, email)
-    session.bulk_insert_mappings(WebhookData, webhooks)
+    db.session.bulk_insert_mappings(WebhookData, webhooks)
     return 'Webhook recebido'
 
 # Função para liberar acesso ao curso
@@ -129,7 +129,7 @@ def get_webhooks():
 @app.route('/tratativas/<cliente>', methods=['GET'])
 def get_tratativas(cliente):
     tratativas = []
-    for webhook in webhooks.values():
+    for webhook in webhooks:
         if webhook['nome'] == cliente:
             tratativas.append(webhook)
     return jsonify({'tratativas': tratativas})
