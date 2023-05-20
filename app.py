@@ -73,7 +73,7 @@ def login():
 webhooks = []
 
 # Rota para receber o webhook do sistema de pagamento
-@app.route('/webhook1000/', methods=['POST'])
+@app.route('/webhook1000/', methods=['POST', 'GET'])
 def handle_webhook():
     response = request.data
     response_str = response.decode('utf-8')
