@@ -33,7 +33,7 @@ def login():
     return render_template('login.html')
 
 # Rota para autenticação de login
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['POST', 'GET'])
 def login_post():
     data = request.form
     email = data['email']
@@ -90,6 +90,7 @@ def handle_webhook():
     response_str = response.decode('utf-8')
     response_json = json.loads(response_str)
     print(response_json)
+
     # Extrair os dados do webhook
     nome = response_json['nome']
     email = response_json['email']
