@@ -89,7 +89,7 @@ def handle_webhook():
     response = request.data
     response_str = response.decode('utf-8')
     response_json = json.loads(response_str)
-
+    print(response_json)
     # Extrair os dados do webhook
     nome = response_json['nome']
     email = response_json['email']
