@@ -88,7 +88,9 @@ def signup_post():
     db.session.add(new_user)
     db.session.commit()
 
-    return jsonify({'message': 'Conta criada com sucesso'}), 201
+    # Redirecionar o usuário para a rota '/webhooks'
+    return redirect(url_for('webhooks'))
+
 
 
 @app.route('/webhooks', methods=['GET'])
