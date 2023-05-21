@@ -95,10 +95,10 @@ def signup_post():
 
 
 
-@app.route('/webhooks', methods=['GET'])
-def webhooks():
-    webhooks = WebhookData.query.all()
-    return render_template('webhooks.html', webhooks=webhooks)
+#@app.route('/webhooks', methods=['GET'])
+#def webhooks():
+#    webhooks = WebhookData.query.all()
+#    return render_template('webhooks.html', webhooks=webhooks)
 
 @app.route('/webhook1000/', methods=['POST'])
 def handle_webhook():
@@ -148,14 +148,14 @@ def remover_acesso(nome, email):
     print(status_atual)
     return status_atual
 
-#@app.route('/filtrar_tratativas', methods=['GET'])
-#def filtrar_tratativas():
-#    email = request.args.get('email')
-#    if email:
-#        tratativas = WebhookData.query.filter(WebhookData.email.ilike(f'%{email}%')).all()
-#    else:
-#        tratativas = WebhookData.query.all()
-#    return render_template('webhooks.html', webhooks=tratativas)
+@app.route('/tratativas', methods=['GET'])
+def filtrar_tratativas():
+    email = request.args.get('email')
+    if email:
+        tratativas = WebhookData.query.filter(WebhookData.email.ilike(f'%{email}%')).all()
+    else:
+        tratativas = WebhookData.query.all()
+    return render_template('webhooks.html', webhooks=tratativas)
 
 
 if __name__ == '__main__':
