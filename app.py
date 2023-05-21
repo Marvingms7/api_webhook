@@ -58,7 +58,11 @@ def login_post():
 
     return redirect(url_for('webhooks', _method='GET'))
 
-@app.route('/signup', methods=['POST', 'GET'])
+@app.route('/signup', methods=['GET'])
+def show_signup_form():
+    return render_template('signup.html')
+
+@app.route('/signup', methods=['POST'])
 def signup_post():
     data = request.form
     email = data['email']
@@ -81,6 +85,7 @@ def signup_post():
     db.session.commit()
 
     return jsonify({'message': 'Conta criada com sucesso'}), 201
+
 
 @app.route('/webhooks', methods=['GET'])
 def webhooks():
