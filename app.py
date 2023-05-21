@@ -148,14 +148,14 @@ def remover_acesso(nome, email):
     print(status_atual)
     return status_atual
 
-@app.route('/filtrar_tratativas', methods=['GET'])
-def filtrar_tratativas():
-    email = request.args.get('email')
-    if email:
-        tratativas = WebhookData.query.filter(WebhookData.email.ilike(f'%{email}%')).all()
-    else:
-        tratativas = WebhookData.query.all()
-    return render_template('webhooks.html', webhooks=tratativas)
+#@app.route('/filtrar_tratativas', methods=['GET'])
+#def filtrar_tratativas():
+#    email = request.args.get('email')
+#    if email:
+#        tratativas = WebhookData.query.filter(WebhookData.email.ilike(f'%{email}%')).all()
+#    else:
+#        tratativas = WebhookData.query.all()
+#    return render_template('webhooks.html', webhooks=tratativas)
 
 
 if __name__ == '__main__':
