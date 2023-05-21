@@ -6,10 +6,14 @@ import json
 app = Flask(__name__)
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:1@localhost/api_db'
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://noqwnjeqfabtbk:ab26e39b433f8699116920dc4d6bdedd8242a33d2941271e3a760654b03ed47e@ec2-44-213-151-75.compute-1.amazonaws.com:5432/d4uj4mea32g44k'
-uri = os.getenv("DATABASE_URL")
-if uri.startswith("postgres://"):
-    uri = uri.replace("postgres://", "postgresql://", 1)
-app.config['SQLALCHEMY_DATABASE_URI'] = uri
+# production or dev DB
+try:
+    prodURI = os.getenv('DATABASE_URL')
+    prodURI = prodURI.replace("postgres://", "postgresql://")
+    app.config['SQLALCHEMY_DATABASE_URI'] = prodURI
+
+except:
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:1@localhost/api_db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
