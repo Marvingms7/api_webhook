@@ -11,7 +11,7 @@ db = SQLAlchemy(app)
 
 # Modelo de dados do usuário
 class User(db.Model):
-    # id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(100))
 
@@ -21,7 +21,7 @@ class User(db.Model):
 
 # Modelo de dados do webhook para salvar
 class WebhookData(db.Model):
-    # id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     nome = db.Column(db.String(100), nullable=True)
     email = db.Column(db.String(100), nullable=True)
     status = db.Column(db.String(50), nullable=True)
