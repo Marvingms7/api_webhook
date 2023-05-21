@@ -73,7 +73,7 @@ def login_post():
 
     return redirect(url_for('webhooks'))
 
-@app.route('/signup', methods=['POST'])
+@app.route('/signup', methods=['POST', 'GET'])
 def signup_post():
     data = request.form
     email = data['email']
