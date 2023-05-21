@@ -61,6 +61,11 @@
         .no-results {
             color: #777;
         }
+
+        .field-label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
     </style>
 </head>
 <body>
@@ -74,7 +79,20 @@
         <h1>Tratativas</h1>
         <ul>
             {% for webhook in webhooks %}
-                <li>{{ webhook.nome }} - {{ webhook.email }} - {{ webhook.status }}</li>
+                <li>
+                    <p class="field-label">Nome:</p>
+                    <p>{{ webhook.nome }}</p>
+                    <p class="field-label">Email:</p>
+                    <p>{{ webhook.email }}</p>
+                    <p class="field-label">Status:</p>
+                    <p>{{ webhook.status }}</p>
+                    <p class="field-label">Valor:</p>
+                    <p>{{ webhook.valor }}</p>
+                    <p class="field-label">Forma de Pagamento:</p>
+                    <p>{{ webhook.forma_pagamento }}</p>
+                    <p class="field-label">Parcelas:</p>
+                    <p>{{ webhook.parcelas }}</p>
+                </li>
             {% endfor %}
         </ul>
     {% else %}
