@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 import json
 from sqlalchemy import or_
@@ -15,7 +15,7 @@ except:
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-class User(db.Model):
+class UserModel(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(100))
@@ -50,7 +50,7 @@ def require_authentication(func):
         if not token:
             return jsonify({'message': 'Acesso não autorizado'}), 401
 
-        user = User.query.filter_by(token=token).first()
+        user = UserModel.query.filter_by(token=token).first()
         if not user:
             return jsonify({'message': 'Acesso não autorizado'}), 401
 
@@ -66,20 +66,12 @@ def login_post():
     data = request.form
     email = data['email']
     password = data['password']
-    user = User.query.filter_by(email=email).first()
+    user = UserModel.query.filter_by(email=email).first()
 
     if not user or user.password != password:
         return jsonify({'message': 'Credenciais inválidas'}), 401
 
-    token = request.headers.get('Authorization')
-    if not token or token != user.token:
-        return jsonify({'message': 'Acesso não autorizado'}), 401
-
-    return jsonify({'message': 'Login bem-sucedido'}), 200
-
-@app.route('/signup', methods=['GET'])
-def signup():
-    return render_template('signup.html')
+    return redirect(url_for('webhooks'))
 
 @app.route('/signup', methods=['POST'])
 def signup_post():
@@ -88,25 +80,24 @@ def signup_post():
     password = data['password']
     confirm_password = data['confirm_password']
     token = data['token']
-    expected_token = 'uhdfaAADF123'  # Token fixo
 
+    expected_token = 'uhdfaAADF123'
     if token != expected_token:
         return jsonify({'message': 'Token inválido'}), 401
 
-    if User.query.filter_by(email=email).first():
+    if UserModel.query.filter_by(email=email).first():
         return jsonify({'message': 'Email já cadastrado'}), 400
 
     if password != confirm_password:
         return jsonify({'message': 'As senhas não correspondem'}), 400
 
-    new_user = User(email=email, password=password, token=expected_token)
+    new_user = UserModel(email=email, password=password, token=expected_token)
     db.session.add(new_user)
     db.session.commit()
 
     return jsonify({'message': 'Conta criada com sucesso'}), 201
 
 @app.route('/webhooks', methods=['GET'])
-@require_authentication
 def webhooks():
     webhooks = WebhookData.query.all()
     return render_template('webhooks.html', webhooks=webhooks)
@@ -151,7 +142,6 @@ def remover_acesso(nome, email):
     print(f"Remover acesso do cliente: {nome} ({email})")
 
 @app.route('/filtrar_tratativas', methods=['GET'])
-@require_authentication
 def filtrar_tratativas():
     email = request.args.get('email')
     if not email:
