@@ -114,7 +114,6 @@ def handle_webhook():
 
     if status == 'aprovado':
         status_atual = liberar_acesso(nome, email)
-        #enviar_mensagem_boas_vindas(nome, email)
     elif status == 'recusado':
         status_atual = enviar_mensagem_pagamento_recusado(nome, email)
     elif status == 'reembolsado':
