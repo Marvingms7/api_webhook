@@ -52,6 +52,8 @@
             margin-bottom: 10px;
             border-radius: 4px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-wrap: wrap;
         }
 
         li:hover {
@@ -64,7 +66,11 @@
 
         .field-label {
             font-weight: bold;
-            margin-bottom: 5px;
+            margin-right: 5px;
+        }
+
+        .field-value {
+            margin-right: 10px;
         }
     </style>
 </head>
@@ -81,17 +87,17 @@
             {% for webhook in webhooks %}
                 <li>
                     <p class="field-label">Nome:</p>
-                    <p>{{ webhook.nome }}</p>
+                    <p class="field-value">{{ webhook.nome }}</p>
                     <p class="field-label">Email:</p>
-                    <p>{{ webhook.email }}</p>
+                    <p class="field-value">{{ webhook.email }}</p>
                     <p class="field-label">Status:</p>
-                    <p>{{ webhook.status }}</p>
+                    <p class="field-value">{{ webhook.status }}</p>
                     <p class="field-label">Valor:</p>
-                    <p>{{ webhook.valor }}</p>
+                    <p class="field-value">{{ webhook.valor }}</p>
                     <p class="field-label">Forma de Pagamento:</p>
-                    <p>{{ webhook.forma_pagamento }}</p>
+                    <p class="field-value">{{ webhook.forma_pagamento }}</p>
                     <p class="field-label">Parcelas:</p>
-                    <p>{{ webhook.parcelas }}</p>
+                    <p class="field-value">{{ webhook.parcelas }}</p>
                 </li>
             {% endfor %}
         </ul>
