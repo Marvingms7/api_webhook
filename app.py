@@ -2,6 +2,7 @@ import os
 from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 import json
+from sqlalchemy import or_
 
 app = Flask(__name__)
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:1@localhost/api_db'
@@ -145,6 +146,20 @@ def enviar_mensagem_pagamento_recusado(nome, email):
 # Função para remover acesso ao curso
 def remover_acesso(nome, email):
     print(f"Remover acesso do cliente: {nome} ({email})")
+
+from sqlalchemy import or_
+
+@app.route('/filtrar_tratativas', methods=['GET'])
+def filtrar_tratativas():
+    email = request.args.get('email')
+
+    if not email:
+        return render_template('webhooks.html', webhooks=[])
+
+    tratativas = WebhookData.query.filter(WebhookData.email.ilike(f'%{email}%')).all()
+
+    return render_template('webhooks.html', webhooks=tratativas)
+
 
 
 if __name__ == '__main__':
