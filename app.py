@@ -51,7 +51,7 @@ def login_post():
     return jsonify({'message': 'Login bem-sucedido'}), 200
 
 # Rota para exibir a tela de cadastro
-@app.route('/signup', methods=['GET'])
+@app.route('/signup', methods=['GET',])
 def signup():
     return render_template('signup.html')
 
