@@ -42,6 +42,10 @@ class WebhookData(db.Model):
         self.forma_pagamento = forma_pagamento
         self.parcelas = parcelas
 
+@app.route('/')
+def index():
+    return redirect(url_for('login'))
+
 @app.route('/login', methods=['GET'])
 def login():
     return render_template('login.html')
