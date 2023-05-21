@@ -33,14 +33,16 @@ class WebhookData(db.Model):
     valor = db.Column(db.Float, nullable=True)
     forma_pagamento = db.Column(db.String(100), nullable=True)
     parcelas = db.Column(db.Integer, nullable=True)
+    status_atual = db.Column(db.String(200), nullable=True)  # Nova coluna para as mensagens das tratativas
 
-    def __init__(self, nome, email, status, valor, forma_pagamento, parcelas):
+    def __init__(self, nome, email, status, valor, forma_pagamento, parcelas, status_atual):
         self.nome = nome
         self.email = email
         self.status = status
         self.valor = valor
         self.forma_pagamento = forma_pagamento
         self.parcelas = parcelas
+        self.status_atual = status_atual
 
 @app.route('/')
 def index():
@@ -88,10 +90,7 @@ def signup_post():
     db.session.add(new_user)
     db.session.commit()
 
-    # Redirecionar o usuário para a rota '/webhooks'
     return redirect(url_for('webhooks'))
-
-
 
 @app.route('/webhooks', methods=['GET'])
 def webhooks():
@@ -111,31 +110,41 @@ def handle_webhook():
     parcelas = response_json['parcelas']
 
     if status == 'aprovado':
-        liberar_acesso(nome, email)
+        status_atual = liberar_acesso(nome, email)
         enviar_mensagem_boas_vindas(nome, email)
     elif status == 'recusado':
-        enviar_mensagem_pagamento_recusado(nome, email)
+        status_atual = enviar_mensagem_pagamento_recusado(nome, email)
     elif status == 'reembolsado':
-        remover_acesso(nome, email)
+        status_atual = remover_acesso(nome, email)
+    else:
+        status_atual = 'Tratativa não definida'
 
     new_webhook = WebhookData(nome=nome, email=email, status=status, valor=valor,
-                              forma_pagamento=forma_pagamento, parcelas=parcelas)
+                              forma_pagamento=forma_pagamento, parcelas=parcelas, status_atual=status_atual)
     db.session.add(new_webhook)
     db.session.commit()
 
     return 'Webhook recebido'
 
 def liberar_acesso(nome, email):
-    print(f"Liberar acesso do cliente: {nome} ({email})")
+    status_atual = f"Liberar acesso do cliente: {nome} ({email})"
+    print(status_atual)
+    return status_atual
 
 def enviar_mensagem_boas_vindas(nome, email):
-    print(f"Seja muito bem-vindo à nossa plataforma: {nome} ({email})")
+    status_atual = f"Seja muito bem-vindo à nossa plataforma: {nome} ({email})"
+    print(status_atual)
+    return status_atual
 
 def enviar_mensagem_pagamento_recusado(nome, email):
-    print(f"Seu pagamento foi recusado: {nome} ({email})")
+    status_atual = f"Seu pagamento foi recusado: {nome} ({email})"
+    print(status_atual)
+    return status_atual
 
 def remover_acesso(nome, email):
-    print(f"Remover acesso do cliente: {nome} ({email})")
+    status_atual = f"Remover acesso do cliente: {nome} ({email})"
+    print(status_atual)
+    return status_atual
 
 @app.route('/filtrar_tratativas', methods=['GET'])
 def filtrar_tratativas():
