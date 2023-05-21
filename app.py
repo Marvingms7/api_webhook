@@ -138,6 +138,11 @@ def enviar_mensagem_pagamento_recusado(nome, email):
 def remover_acesso(nome, email):
     print(f"Remover acesso do cliente: {nome} ({email})")
 
+
+def create_app():
+    return app
+
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
