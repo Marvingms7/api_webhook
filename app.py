@@ -3,7 +3,6 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 import json
 from sqlalchemy import or_
-from functools import wraps
 
 app = Flask(__name__)
 try:
@@ -43,20 +42,6 @@ class WebhookData(db.Model):
         self.forma_pagamento = forma_pagamento
         self.parcelas = parcelas
 
-def require_authentication(func):
-    @wraps(func)
-    def decorated(*args, **kwargs):
-        token = request.headers.get('Authorization')
-        if not token:
-            return jsonify({'message': 'Acesso não autorizado'}), 401
-
-        user = UserModel.query.filter_by(token=token).first()
-        if not user:
-            return jsonify({'message': 'Acesso não autorizado'}), 401
-
-        return func(*args, **kwargs)
-    return decorated
-
 @app.route('/login', methods=['GET'])
 def login():
     return render_template('login.html')
@@ -71,7 +56,7 @@ def login_post():
     if not user or user.password != password:
         return jsonify({'message': 'Credenciais inválidas'}), 401
 
-    return redirect(url_for('webhooks'))
+    return redirect(url_for('webhooks', _method='GET'))
 
 @app.route('/signup', methods=['POST', 'GET'])
 def signup_post():
