@@ -71,20 +71,6 @@
         .field-value {
             color: #777;
         }
-
-        .status-label {
-            color: #555;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-
-        .status-approved {
-            color: #28a745;
-        }
-
-        .status-rejected {
-            color: #dc3545;
-        }
     </style>
 </head>
 <body>
@@ -124,14 +110,8 @@
                         <p class="field-value">{{ webhook.parcelas }}</p>
                     </div>
                     <div>
-                        <p class="status-label">Status Atual:</p>
-                        {% if webhook.status_atual == 'Aprovado' %}
-                            <p class="field-value status-approved">{{ webhook.status_atual }}</p>
-                        {% elseif webhook.status_atual == 'Recusado' %}
-                            <p class="field-value status-rejected">{{ webhook.status_atual }}</p>
-                        {% else %}
-                            <p class="field-value">{{ webhook.status_atual }}</p>
-                        {% endif %}
+                        <p class="field-label">Status Atual:</p>
+                        <p class="field-value">{{ webhook.status_atual }}</p>
                     </div>
                 </li>
             {% endfor %}
