@@ -1,35 +1,84 @@
-<form action="/filtrar_tratativas" method="GET">
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" required>
-    <button type="submit">Filtrar</button>
-</form>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tratativas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
 
-{% if webhooks %}
-    <h1>Tratativas</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Nome</th>
-                <th>Email</th>
-                <th>Status</th>
-                <th>Valor</th>
-                <th>Forma de Pagamento</th>
-                <th>Parcelas</th>
-            </tr>
-        </thead>
-        <tbody>
+        h1 {
+            color: #333;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="email"] {
+            width: 300px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        button[type="submit"] {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: #fff;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        li:hover {
+            background-color: #f0f0f0;
+        }
+
+        .no-results {
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <form action="/filtrar_tratativas" method="GET">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <button type="submit">Filtrar</button>
+    </form>
+
+    {% if webhooks %}
+        <h1>Tratativas</h1>
+        <ul>
             {% for webhook in webhooks %}
-                <tr>
-                    <td>{{ webhook.nome }}</td>
-                    <td>{{ webhook.email }}</td>
-                    <td>{{ webhook.status }}</td>
-                    <td>{{ webhook.valor }}</td>
-                    <td>{{ webhook.forma_pagamento }}</td>
-                    <td>{{ webhook.parcelas }}</td>
-                </tr>
+                <li>{{ webhook.nome }} - {{ webhook.email }} - {{ webhook.status }}</li>
             {% endfor %}
-        </tbody>
-    </table>
-{% else %}
-    <p>Nenhuma tratativa encontrada.</p>
-{% endif %}
+        </ul>
+    {% else %}
+        <p class="no-results">Nenhuma tratativa encontrada.</p>
+    {% endif %}
+</body>
+</html>
