@@ -68,6 +68,7 @@ def login_post():
 def show_signup_form():
     return render_template('signup.html')
 
+# ...
 @app.route('/signup', methods=['POST'])
 def signup_post():
     data = request.form
@@ -78,19 +79,21 @@ def signup_post():
 
     expected_token = 'uhdfaAADF123'
     if token != expected_token:
-        return jsonify({'message': 'Token inválido'}), 401
+        return render_template('signup.html', message='Token inválido')
 
     if UserModel.query.filter_by(email=email).first():
-        return jsonify({'message': 'Email já cadastrado'}), 400
+        return render_template('signup.html', message='Email já cadastrado')
 
     if password != confirm_password:
-        return jsonify({'message': 'As senhas não correspondem'}), 400
+        return render_template('signup.html', message='As senhas não correspondem')
 
     new_user = UserModel(email=email, password=password, token=expected_token)
     db.session.add(new_user)
     db.session.commit()
 
-    return redirect(url_for('webhooks'))
+    return render_template('signup.html', message='Cadastro realizado com sucesso! Faça o login.')
+
+
 
 @app.route('/webhooks', methods=['GET'])
 def webhooks():
@@ -111,7 +114,7 @@ def handle_webhook():
 
     if status == 'aprovado':
         status_atual = liberar_acesso(nome, email)
-        enviar_mensagem_boas_vindas(nome, email)
+        #enviar_mensagem_boas_vindas(nome, email)
     elif status == 'recusado':
         status_atual = enviar_mensagem_pagamento_recusado(nome, email)
     elif status == 'reembolsado':
@@ -127,22 +130,22 @@ def handle_webhook():
     return 'Webhook recebido'
 
 def liberar_acesso(nome, email):
-    status_atual = f"Liberar acesso do cliente: {nome} ({email})"
+    status_atual = f"Liberar acesso para {nome} ({email}\n Seja muito bem-vindo à nossa plataforma!!)"
     print(status_atual)
     return status_atual
 
-def enviar_mensagem_boas_vindas(nome, email):
-    status_atual = f"Seja muito bem-vindo à nossa plataforma: {nome} ({email})"
-    print(status_atual)
-    return status_atual
+#def enviar_mensagem_boas_vindas(nome, email):
+#    status_atual = f"Seja muito bem-vindo à nossa plataforma: {nome} ({email})"
+#    print(status_atual)
+#    return status_atual
 
 def enviar_mensagem_pagamento_recusado(nome, email):
-    status_atual = f"Seu pagamento foi recusado: {nome} ({email})"
+    status_atual = f"Seu pagamento foi recusado {nome} ({email})"
     print(status_atual)
     return status_atual
 
 def remover_acesso(nome, email):
-    status_atual = f"Remover acesso do cliente: {nome} ({email})"
+    status_atual = f"Remover acesso do cliente {nome} ({email})"
     print(status_atual)
     return status_atual
 
