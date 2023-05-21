@@ -66,11 +66,12 @@
 
         .field-label {
             font-weight: bold;
-            margin-right: 5px;
+            margin-right: 10px;
+            color: #555;
         }
 
         .field-value {
-            margin-right: 10px;
+            color: #777;
         }
     </style>
 </head>
@@ -86,18 +87,30 @@
         <ul>
             {% for webhook in webhooks %}
                 <li>
-                    <p class="field-label">Nome:</p>
-                    <p class="field-value">{{ webhook.nome }}</p>
-                    <p class="field-label">Email:</p>
-                    <p class="field-value">{{ webhook.email }}</p>
-                    <p class="field-label">Status:</p>
-                    <p class="field-value">{{ webhook.status }}</p>
-                    <p class="field-label">Valor:</p>
-                    <p class="field-value">{{ webhook.valor }}</p>
-                    <p class="field-label">Forma de Pagamento:</p>
-                    <p class="field-value">{{ webhook.forma_pagamento }}</p>
-                    <p class="field-label">Parcelas:</p>
-                    <p class="field-value">{{ webhook.parcelas }}</p>
+                    <div>
+                        <p class="field-label">Nome:</p>
+                        <p class="field-value">{{ webhook.nome }}</p>
+                    </div>
+                    <div>
+                        <p class="field-label">Email:</p>
+                        <p class="field-value">{{ webhook.email }}</p>
+                    </div>
+                    <div>
+                        <p class="field-label">Status:</p>
+                        <p class="field-value">{{ webhook.status }}</p>
+                    </div>
+                    <div>
+                        <p class="field-label">Valor:</p>
+                        <p class="field-value">{{ webhook.valor }}</p>
+                    </div>
+                    <div>
+                        <p class="field-label">Forma de Pagamento:</p>
+                        <p class="field-value">{{ webhook.forma_pagamento }}</p>
+                    </div>
+                    <div>
+                        <p class="field-label">Parcelas:</p>
+                        <p class="field-value">{{ webhook.parcelas }}</p>
+                    </div>
                 </li>
             {% endfor %}
         </ul>
