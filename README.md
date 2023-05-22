@@ -4,6 +4,6 @@ Este projeto é um teste para uma empresa, basicamente consiste em receber webho
 
 https://apiwebhook.herokuapp.com/login
 
-a api possui 3 rotas, sendo elas a de /login, /signup e /tratativas.
+a api possui 4 rotas, sendo elas a de /login, /signup, /tratativas e webhooks.
 
-em /tratativas é filtrado todos os recebimentos de webhooks e os status de cada ume suas devidas alterações.
+em /tratativas é filtrado todos os recebimentos de webhooks e os status de cada ume suas devidas alterações assim com a /webhooks.
