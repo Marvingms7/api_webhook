@@ -129,17 +129,17 @@ def handle_webhook():
     return 'Webhook recebido'
 
 def liberar_acesso(nome, email):
-    status_atual = f"Acesso liberarado {nome} {email},\n Seja muito bem-vindo à nossa plataforma!!"
+    status_atual = f"Acesso liberarado , Seja muito bem-vindo à nossa plataforma {nome} {email}"
     print(status_atual)
     return status_atual
 
 def enviar_mensagem_pagamento_recusado(nome, email):
-    status_atual = f"Seu pagamento foi recusado {nome} ({email}"
+    status_atual = f"Seu pagamento foi recusado {nome} {email}"
     print(status_atual)
     return status_atual
 
 def remover_acesso(nome, email):
-    status_atual = f"Remover acesso do cliente {nome} ({email}"
+    status_atual = f"Acesso removido, {nome} {email}"
     print(status_atual)
     return status_atual
 
