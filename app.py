@@ -148,7 +148,7 @@ def remover_acesso(nome, email):
     print(status_atual)
     return status_atual
 
-@app.route('/tratativas', methods=['GET'])
+@app.route('/filtar_tratativas', methods=['GET'])
 def filtrar_tratativas():
     email = request.args.get('email')
     if email:
