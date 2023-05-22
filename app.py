@@ -133,11 +133,6 @@ def liberar_acesso(nome, email):
     print(status_atual)
     return status_atual
 
-#def enviar_mensagem_boas_vindas(nome, email):
-#    status_atual = f"Seja muito bem-vindo à nossa plataforma: {nome} ({email})"
-#    print(status_atual)
-#    return status_atual
-
 def enviar_mensagem_pagamento_recusado(nome, email):
     status_atual = f"Seu pagamento foi recusado {nome} ({email}"
     print(status_atual)
