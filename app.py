@@ -68,7 +68,7 @@ def login_post():
 def show_signup_form():
     return render_template('signup.html')
 
-# ...
+
 @app.route('/signup', methods=['POST'])
 def signup_post():
     data = request.form
