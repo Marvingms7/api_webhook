@@ -68,7 +68,7 @@ def login_post():
 def show_signup_form():
     return render_template('signup.html')
 
-
+# ...
 @app.route('/signup', methods=['POST'])
 def signup_post():
     data = request.form
@@ -92,6 +92,13 @@ def signup_post():
     db.session.commit()
 
     return render_template('signup.html', message='Cadastro realizado com sucesso! Faça o login.')
+
+
+
+@app.route('/webhooks', methods=['GET'])
+def webhooks():
+    webhooks = WebhookData.query.all()
+    return render_template('webhooks.html', webhooks=webhooks)
 
 @app.route('/webhook1000/', methods=['POST'])
 def handle_webhook():
@@ -125,6 +132,11 @@ def liberar_acesso(nome, email):
     status_atual = f"Acesso liberado {nome} {email},\n Seja muito bem-vindo à nossa plataforma!!)"
     print(status_atual)
     return status_atual
+
+#def enviar_mensagem_boas_vindas(nome, email):
+#    status_atual = f"Seja muito bem-vindo à nossa plataforma: {nome} ({email})"
+#    print(status_atual)
+#    return status_atual
 
 def enviar_mensagem_pagamento_recusado(nome, email):
     status_atual = f"Seu pagamento foi recusado {nome} ({email})"
